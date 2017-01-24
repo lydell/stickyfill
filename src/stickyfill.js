@@ -8,7 +8,8 @@
 
         //visibility API strings
         hiddenPropertyName = 'hidden',
-        visibilityChangeEventName = 'visibilitychange';
+        visibilityChangeEventName = 'visibilitychange',
+        eventOptions = {passive: true, capture: true};
 
     //fallback to prefixed names in old webkit browsers
     if (doc.webkitHidden !== undefined) {
@@ -366,15 +367,15 @@
         updateScrollPos();
         initAll();
 
-        win.addEventListener('scroll', onScroll);
-        win.addEventListener('wheel', onWheel);
+        win.addEventListener('scroll', onScroll, eventOptions);
+        win.addEventListener('wheel', onWheel, eventOptions);
 
         //watch for width changes
-        win.addEventListener('resize', rebuild);
-        win.addEventListener('orientationchange', rebuild);
+        win.addEventListener('resize', rebuild, eventOptions);
+        win.addEventListener('orientationchange', rebuild, eventOptions);
 
         //watch for page visibility
-        doc.addEventListener(visibilityChangeEventName, handlePageVisibilityChange);
+        doc.addEventListener(visibilityChangeEventName, handlePageVisibilityChange, eventOptions);
 
         startFastCheckTimer();
 
@@ -394,11 +395,11 @@
     }
 
     function pause() {
-        win.removeEventListener('scroll', onScroll);
-        win.removeEventListener('wheel', onWheel);
-        win.removeEventListener('resize', rebuild);
-        win.removeEventListener('orientationchange', rebuild);
-        doc.removeEventListener(visibilityChangeEventName, handlePageVisibilityChange);
+        win.removeEventListener('scroll', onScroll, eventOptions);
+        win.removeEventListener('wheel', onWheel, eventOptions);
+        win.removeEventListener('resize', rebuild, eventOptions);
+        win.removeEventListener('orientationchange', rebuild, eventOptions);
+        doc.removeEventListener(visibilityChangeEventName, handlePageVisibilityChange, eventOptions);
 
         stopFastCheckTimer();
 
